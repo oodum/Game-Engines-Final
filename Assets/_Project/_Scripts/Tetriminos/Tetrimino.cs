@@ -8,10 +8,12 @@ namespace Tetris.Core {
         public Transform[] TetriminoPartTransforms;
         public abstract Color Color { get; }
 
+        // set the color of the tetrimino in the editor validation
         void OnValidate() {
             SetColor();
         }
 
+        // set the color of the tetrimino in the editor, and add the children of this tetrimino to the TetriminoPartTransforms array
         void Awake() {
             SetColor();
             AddChildrenToTransformsArray();
@@ -37,6 +39,8 @@ namespace Tetris.Core {
             }
         }
         public void ApplyGravity() => ExecuteCommand(new MoveDownCommand());
+        
+        // execute the command pattern
         public void ExecuteCommand(ICommand command) {
             command.Execute(this);
         }

@@ -5,9 +5,11 @@ using UnityEngine;
 
 namespace Tetris.Pooling {
     public class ObjectPool : MonoBehaviour {
+        // use a dictionary to store the pool of tetriminos, since we need to know the type of the tetrimino
         readonly Dictionary<Type, Queue<Tetrimino>> pool = new();
         [SerializeField] int size;
         public T Get<T>() where T : Tetrimino {
+            // if the pool does not contain the type, return null
             if (!pool.TryGetValue(typeof(T), out var queue) || queue.Count <= 0) return null;
             var tetrimino = (T)queue.Dequeue();
             tetrimino.gameObject.SetActive(true);
@@ -21,6 +23,7 @@ namespace Tetris.Pooling {
         }
 
         void Start() {
+            // this will spawn size amounts of each tetrimino type
             Initialize<BlueTetrimino>();
             Initialize<RedTetrimino>();
             Initialize<GreenTetrimino>();
