@@ -149,6 +149,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pool: {fileID: 992243454}
+  tetriminoLayer:
+    serializedVersion: 2
+    m_Bits: 64
   LowerBound: -4.5
   LeftBound: -2
   RightBound: 2

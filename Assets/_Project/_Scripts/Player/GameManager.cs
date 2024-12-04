@@ -17,6 +17,7 @@ namespace Tetris.Core {
         [SerializeField] float gravityTickRateSeconds;
         float timer;
 
+        RaycastHit[] results;
         public void AddTetrimino(Tetrimino tetrimino) {
             ActiveTetriminos.Add(tetrimino);
         }
@@ -24,6 +25,11 @@ namespace Tetris.Core {
             foreach (var tetrimino in ActiveTetriminos) {
                 tetrimino.ApplyGravity();
             }
+        }
+
+        protected override void Awake() {
+            base.Awake();
+            results = new RaycastHit[2];
         }
 
         void Start() {
@@ -49,6 +55,7 @@ namespace Tetris.Core {
         void Update() {
             HandleGravity();
             HandleBounds();
+            HandleTouching();
         }
         void HandleBounds() {
             if (CurrentTetrimino == null) return;
@@ -66,12 +73,16 @@ namespace Tetris.Core {
         }
 
         void HandleTouching() {
-            /*
-            foreach (var VARIABLE in COLLECTION) {
-                
+            foreach (var t in CurrentTetrimino.TetriminoPartTransforms) {
+                var size = Physics.RaycastNonAlloc(t.position, Vector3.down, results, 0.3f, tetriminoLayer);
+                for (int i = 0; i < size; i++) {
+                    if (results[i].transform.parent != t.parent) {
+                        Debug.Log("Touching");
+                        CurrentTetrimino = Get();
+                        return;
+                    }
+                }
             }
-            var hit = Physics.Raycast()
-        */
         }
     }
 }
